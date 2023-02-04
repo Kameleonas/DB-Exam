@@ -1,3 +1,4 @@
+import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,6 +10,14 @@ public class StudentAnswers {
 
     @Column
     private String answer;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "exams_id")
+    private Exams exams;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     public StudentAnswers() {
     }
