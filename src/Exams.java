@@ -1,6 +1,6 @@
-import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -8,7 +8,6 @@ import java.util.List;
 public class Exams {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private long id;
 
     @Column(nullable = false)
@@ -32,23 +31,17 @@ public class Exams {
     public Exams() {
     }
 
-    public Exams(long id, String question, String correctAnswer, String secondAnswer, String thirdAnswer,
-                 int answerOrder, List<StudentAnswers> studentAnswers) {
-        this.id = id;
+    public Exams(String question, String correctAnswer, String secondAnswer, String thirdAnswer,
+                 int answerOrder) {
         this.question = question;
         this.correctAnswer = correctAnswer;
         this.secondAnswer = secondAnswer;
         this.thirdAnswer = thirdAnswer;
         this.answerOrder = answerOrder;
-        this.studentAnswers = studentAnswers;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getQuestion() {
@@ -97,5 +90,36 @@ public class Exams {
 
     public void setStudentAnswers(List<StudentAnswers> studentAnswers) {
         this.studentAnswers = studentAnswers;
+    }
+
+    @Override
+    public String toString() {
+        String[] answers = new String[3];
+        displayAnswerOrder(answers);
+        return this.question + "\n\n" +
+                "a) " + answers[0] + '\n' +
+                "b) " + answers[1] + '\n' +
+                "c) " + answers[2] + '\n';
+    }
+
+    private String[] displayAnswerOrder(String[] answers){
+        switch (this.answerOrder){
+            case 1 -> {
+                answers[0] = this.correctAnswer;
+                answers[1] = this.secondAnswer;
+                answers[2] = this.thirdAnswer;
+            }
+            case 2 -> {
+                answers[0] = this.secondAnswer;
+                answers[1] = this.correctAnswer;
+                answers[2] = this.thirdAnswer;
+            }
+            case 3 -> {
+                answers[0] = this.thirdAnswer;
+                answers[1] = this.secondAnswer;
+                answers[2] = this.correctAnswer;
+            }
+        }
+        return answers;
     }
 }

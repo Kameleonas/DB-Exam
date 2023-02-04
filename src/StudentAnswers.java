@@ -1,4 +1,3 @@
-import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,17 +21,14 @@ public class StudentAnswers {
     public StudentAnswers() {
     }
 
-    public StudentAnswers(long id, String answer) {
-        this.id = id;
+    public StudentAnswers(String answer, Exams exams, Student student) {
         this.answer = answer;
+        this.exams = exams;
+        this.student = student;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getAnswer() {

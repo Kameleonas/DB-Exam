@@ -1,5 +1,5 @@
-import com.sun.istack.NotNull;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -21,19 +21,17 @@ public class Student {
     public Student() {
     }
 
-    public Student(long id, String name, String surname, List<StudentAnswers> studentAnswers) {
-        this.id = id;
+    public Student(String name) {
+        this.name = name;
+    }
+
+    public Student(String name, String surname) {
         this.name = name;
         this.surname = surname;
-        this.studentAnswers = studentAnswers;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
