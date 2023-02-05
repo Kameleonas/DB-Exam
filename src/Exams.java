@@ -92,17 +92,8 @@ public class Exams {
         this.studentAnswers = studentAnswers;
     }
 
-    @Override
-    public String toString() {
+    public String[] displayAnswerOrder(){
         String[] answers = new String[3];
-        displayAnswerOrder(answers);
-        return this.question + "\n\n" +
-                "a) " + answers[0] + '\n' +
-                "b) " + answers[1] + '\n' +
-                "c) " + answers[2] + '\n';
-    }
-
-    private String[] displayAnswerOrder(String[] answers){
         switch (this.answerOrder){
             case 1 -> {
                 answers[0] = this.correctAnswer;

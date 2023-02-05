@@ -21,6 +21,11 @@ public class StudentAnswers {
     public StudentAnswers() {
     }
 
+    public StudentAnswers(Exams exams, Student student) {
+        this.exams = exams;
+        this.student = student;
+    }
+
     public StudentAnswers(String answer, Exams exams, Student student) {
         this.answer = answer;
         this.exams = exams;
