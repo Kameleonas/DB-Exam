@@ -144,23 +144,23 @@ public class Exams {
         System.out.println("[4] Answer order: " + this.answerOrder);
     }
 
-    public void updateFieldByFieldId(long questionID, Scanner scanner) {
-        switch ((int) questionID) {
+    public void updateFieldByFieldId(int questionID, Scanner scanner) {
+        switch (questionID) {
             case 0 -> {
                 System.out.println("Input Question to Update");
-                this.setQuestion(scanner.nextLine());
+                this.setQuestion(scanner.next());
             }
             case 1 -> {
                 System.out.println("Input Correct answer to Update");
-                this.setCorrectAnswer(scanner.nextLine());
+                this.setCorrectAnswer(scanner.next());
             }
             case 2 -> {
                 System.out.println("Input first False answer to Update");
-                this.setSecondAnswer(scanner.nextLine());
+                this.setSecondAnswer(scanner.next());
             }
             case 3 -> {
                 System.out.println("Input second False answer to Update");
-                this.setThirdAnswer(scanner.nextLine());
+                this.setThirdAnswer(scanner.next());
             }
             case 4 -> {
                 System.out.println("Input new answer order (possible inputs [1],[2] or [3])");

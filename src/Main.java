@@ -12,7 +12,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean runProgram = true;
         int completedExamCounter = 0;
-        int[] correctFalseAndQuestionCount = new int[7];
+        int[] answersAndQuestionsCount = new int[7];
         // 0 - correct answer
         // 1 - false answer 1
         // 2 - false answer 2
@@ -24,15 +24,18 @@ public class Main {
             try {
                 printMenu();
                 String input = scanner.nextLine();
+                while(input == ""){
+                    input = scanner.nextLine();
+                }
                 switch (input) {
                     case "1" -> TestValuesforDB.testInputsForDatabase();
                     case "2" -> {
-                        startExam(scanner, registerStudent(scanner), correctFalseAndQuestionCount);
+                        startExam(scanner, registerStudent(scanner), answersAndQuestionsCount);
                         completedExamCounter++;
                     }
                     case "3" -> addExamQuestion(scanner);
                     case "4" -> editExamQuestion(scanner);
-                    case "5" -> statistics(scanner, completedExamCounter, correctFalseAndQuestionCount);
+                    case "5" -> statistics(scanner, completedExamCounter, answersAndQuestionsCount);
                     case "0" -> runProgram = false;
                     default -> System.out.println("Incorrect input! Try again.");
                 }
@@ -66,7 +69,7 @@ public class Main {
         return new Student(name, surname);
     }
 
-    private static void startExam(Scanner scanner, Student student, int[] correctFalseAndQuestionCount) {
+    private static void startExam(Scanner scanner, Student student, int[] answersAndQuestionsCount) {
         Exams examFromDB;
 
         System.out.println("""
@@ -83,7 +86,7 @@ public class Main {
                 examQuestionCount = session.get(Exams.class, counter++).getId();
             }
             counter = 1;
-            correctFalseAndQuestionCount[3] = (int) examQuestionCount;
+            answersAndQuestionsCount[3] = (int) examQuestionCount;
             if (session.get(Exams.class, counter) != null) {
                 for (long i = 0; i < examQuestionCount; i++) {
                     examFromDB = session.get(Exams.class, counter++);
@@ -96,36 +99,36 @@ public class Main {
                     switch (answer) {
                         case "a" -> {
                             if (questionsByOrder[0].equals(examFromDB.getCorrectAnswer())) {
-                                correctFalseAndQuestionCount[0]++;
+                                answersAndQuestionsCount[0]++;
                             } else if (questionsByOrder[0].equals(examFromDB.getSecondAnswer())) {
-                                correctFalseAndQuestionCount[1]++;
+                                answersAndQuestionsCount[1]++;
                             } else {
-                                correctFalseAndQuestionCount[2]++;
+                                answersAndQuestionsCount[2]++;
                             }
                             fullAnswer = questionsByOrder[0];
-                            correctFalseAndQuestionCount[4]++;
+                            answersAndQuestionsCount[4]++;
                         }
                         case "b" -> {
                             if (questionsByOrder[1].equals(examFromDB.getCorrectAnswer())) {
-                                correctFalseAndQuestionCount[0]++;
+                                answersAndQuestionsCount[0]++;
                             } else if (questionsByOrder[1].equals(examFromDB.getSecondAnswer())) {
-                                correctFalseAndQuestionCount[1]++;
+                                answersAndQuestionsCount[1]++;
                             } else {
-                                correctFalseAndQuestionCount[2]++;
+                                answersAndQuestionsCount[2]++;
                             }
                             fullAnswer = questionsByOrder[1];
-                            correctFalseAndQuestionCount[5]++;
+                            answersAndQuestionsCount[5]++;
                         }
                         case "c" -> {
                             if (questionsByOrder[2].equals(examFromDB.getCorrectAnswer())) {
-                                correctFalseAndQuestionCount[0]++;
+                                answersAndQuestionsCount[0]++;
                             } else if (questionsByOrder[2].equals(examFromDB.getSecondAnswer())) {
-                                correctFalseAndQuestionCount[1]++;
+                                answersAndQuestionsCount[1]++;
                             } else {
-                                correctFalseAndQuestionCount[2]++;
+                                answersAndQuestionsCount[2]++;
                             }
                             fullAnswer = questionsByOrder[2];
-                            correctFalseAndQuestionCount[6]++;
+                            answersAndQuestionsCount[6]++;
                         }
                         case "" -> {
                             fullAnswer = "NO INPUT = FALSE ANSWER";
@@ -153,13 +156,13 @@ public class Main {
     public static void editExamQuestion(Scanner scanner) {
         showAllQuestions();
         System.out.println("Enter Question id to update:");
-        long id = Long.parseLong(scanner.nextLine());
+        int id = scanner.nextInt();
         try (Session session = SessionFactoryMaker.getFactory().openSession()) {
             session.getTransaction().begin();
             Exams examQuestionUpdate = session.get(Exams.class, id);
             examQuestionUpdate.printFieldsAvailable();
             System.out.println("Enter field id to update:");
-            examQuestionUpdate.updateFieldByFieldId(Long.parseLong(scanner.nextLine()), scanner);
+            examQuestionUpdate.updateFieldByFieldId(Integer.parseInt(scanner.next()), scanner);
             session.merge(examQuestionUpdate);
             session.getTransaction().commit();
         }
