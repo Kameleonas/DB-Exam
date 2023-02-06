@@ -1,4 +1,5 @@
 import org.hibernate.Session;
+
 import java.util.Random;
 
 public class TestValuesforDB {
@@ -83,6 +84,7 @@ public class TestValuesforDB {
             session.getTransaction().commit();
         }
     }
+
     private static int randomCounter() {
         Random rn = new Random();
         int answer = rn.nextInt(3) + 1;

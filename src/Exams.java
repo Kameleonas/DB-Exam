@@ -1,7 +1,7 @@
 import jakarta.persistence.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 @Entity
 @Table(name = "exams")
@@ -29,6 +29,23 @@ public class Exams {
     private List<StudentAnswers> studentAnswers;
 
     public Exams() {
+    }
+
+    public Exams(Scanner scanner) {
+        System.out.println("Enter new Exam Question:");
+        this.question = scanner.nextLine();
+        System.out.println("Enter the correct answer for new Exam Question");
+        this.correctAnswer = scanner.nextLine();
+        System.out.println("Enter False answer for new Exam Question");
+        this.secondAnswer = scanner.nextLine();
+        System.out.println("Enter second False answer for new Exam Question");
+        this.thirdAnswer = scanner.nextLine();
+        System.out.println("""
+                Select answer order - input [1],[2] or [3]:
+                [1] - Correct answer position a);
+                [2] - Correct answer position b);
+                [3] - Correct answer position c);""");
+        this.answerOrder = scanner.nextInt();
     }
 
     public Exams(String question, String correctAnswer, String secondAnswer, String thirdAnswer,
@@ -92,9 +109,14 @@ public class Exams {
         this.studentAnswers = studentAnswers;
     }
 
-    public String[] displayAnswerOrder(){
+    @Override
+    public String toString() {
+        return String.format("|ID:%3o| %s", this.getId(), this.getQuestion());
+    }
+
+    public String[] displayAnswerOrder() {
         String[] answers = new String[3];
-        switch (this.answerOrder){
+        switch (this.answerOrder) {
             case 1 -> {
                 answers[0] = this.correctAnswer;
                 answers[1] = this.secondAnswer;
@@ -112,5 +134,39 @@ public class Exams {
             }
         }
         return answers;
+    }
+
+    public void printFieldsAvailable() {
+        System.out.println("[0] Question: " + this.question);
+        System.out.println("[1] Correct answer: " + this.correctAnswer);
+        System.out.println("[2] False answer 1: " + this.secondAnswer);
+        System.out.println("[3] False answer 2: " + this.thirdAnswer);
+        System.out.println("[4] Answer order: " + this.answerOrder);
+    }
+
+    public void updateFieldByFieldId(long questionID, Scanner scanner) {
+        switch ((int) questionID) {
+            case 0 -> {
+                System.out.println("Input Question to Update");
+                this.setQuestion(scanner.nextLine());
+            }
+            case 1 -> {
+                System.out.println("Input Correct answer to Update");
+                this.setCorrectAnswer(scanner.nextLine());
+            }
+            case 2 -> {
+                System.out.println("Input first False answer to Update");
+                this.setSecondAnswer(scanner.nextLine());
+            }
+            case 3 -> {
+                System.out.println("Input second False answer to Update");
+                this.setThirdAnswer(scanner.nextLine());
+            }
+            case 4 -> {
+                System.out.println("Input new answer order (possible inputs [1],[2] or [3])");
+                this.setAnswerOrder(scanner.nextInt());
+            }
+            default -> System.out.println("Unknown field!");
+        }
     }
 }

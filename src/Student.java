@@ -15,7 +15,7 @@ public class Student {
     @Column
     private String surname;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.EAGER)
     private List<StudentAnswers> studentAnswers;
 
     public Student() {
